@@ -1,3 +1,5 @@
+// DAY 1 https://adventofcode.com/2022/day/1
+
 import axios from "axios";
 const fs = require("node:fs");
 const readline = require("node:readline");
