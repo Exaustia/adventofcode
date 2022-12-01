@@ -41,7 +41,7 @@ async function processLineByLine() {
   // ('\r\n') in input.txt as a single line break.
   let myElfs: number[][] = [];
   let elf: number[] = [];
-  for await (const line of rl) {
+  for (const line of rl) {
     // Each line in input.txt will be successively available here as `line`.
     if (line !== "") {
       const cal = parseInt(line);
