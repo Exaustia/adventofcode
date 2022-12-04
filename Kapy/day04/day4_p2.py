@@ -6,10 +6,10 @@ with open('./Kapy/day04/input.txt', 'r') as f:
         elf1 = pair[:pair.find(',')]
         elf2 = pair[pair.find(',')+1:]
 
-        rangeElf1 = range(int(elf1[:elf1.find('-')]),int(elf1[elf1.find('-')+1:])+1)
-        rangeElf2 = range(int(elf2[:elf2.find('-')]),int(elf2[elf2.find('-')+1:])+1)
+        setElf1 = set(range(int(elf1[:elf1.find('-')]),int(elf1[elf1.find('-')+1:])+1))
+        setElf2 = set(range(int(elf2[:elf2.find('-')]),int(elf2[elf2.find('-')+1:])+1))
 
-        if set(rangeElf1).intersection(set(rangeElf2)):
+        if setElf1.intersection(setElf2):
             nb += 1
 
 print(nb)
