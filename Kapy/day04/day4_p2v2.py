@@ -5,13 +5,14 @@ with open('./Kapy/day04/input.txt', 'r') as f:
         pair = line.strip()
 
         a, b = pair.split(',')
-        a = a.split('-')
-        b = b.split('-')
         
-        a[1] = str(int(a[1])+1) # ['2', '4'] --> ['2', '5']
-        b[1] = str(int(b[1])+1)
+        a = list(map(int, a.split('-')))
+        b = list(map(int, b.split('-')))
+        
+        a[1] = a[1]+1 # ['2', '4'] --> ['2', '5']
+        b[1] = b[1]+1
 
-        setA = set(range(*map(int, a)))
+        setA = set(range(*map(int, a))) # histoire d'utiliser map et *
         setB = set(range(*map(int, b)))
 
         if (setA & setB):
