@@ -2,16 +2,15 @@
 forestRows, forestColumns = [], []
 
 def getScore(x, y):
-    global forestColumns, forestRows
     height = forestRows[y][x]
     a = b = c = d = 0
 
     if x == 0 or y == 0 or x == len(forestColumns)-1 or y == len(forestRows)-1:
         return 0
-
+    
     higher = [idx for idx,tree in enumerate(forestRows[y][0:x]) if tree >= height]
     if len(higher) > 0:
-        a = x - higher[len(higher)-1]
+        a = x - higher[-1]
     else:
         a = len(forestRows[y][0:x])
 
@@ -23,7 +22,7 @@ def getScore(x, y):
 
     higher = [idx for idx,tree in enumerate(forestColumns[x][0:y]) if tree >= height]
     if len(higher) > 0:
-        c = y - higher[len(higher)-1]
+        c = y - higher[-1]
     else:
         c = len(forestColumns[x][0:y])
 

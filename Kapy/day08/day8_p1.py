@@ -2,7 +2,6 @@
 forestRows, forestColumns = [], []
 
 def isVisible(x, y):
-    global forestColumns, forestRows
     if x == 0 or y == 0 or x == len(forestColumns)-1 or y == len(forestRows)-1:
         return True
     height = forestRows[y][x]
