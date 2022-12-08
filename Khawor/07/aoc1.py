@@ -44,10 +44,12 @@ class directory():
     def closerOf(self, of, value):
         if((self.size - of) > 0) and ((self.size - of) < value):
             value = self.size
-            print(value)
+            # print(value)
         if(len(self.children) > 0):
             for child in self.children:
-                value = child.closerOf(of, value)
+                tmp = child.closerOf(of, value)
+                if(tmp < value):
+                    value = tmp
         return value
 
 
