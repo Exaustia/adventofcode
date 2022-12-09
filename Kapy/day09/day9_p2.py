@@ -25,25 +25,21 @@ def follow(h, t):
     else:
         return t # don't move
 
-def move(rope, dir, nb):
-    for _ in range(0, nb):
-        h = rope[0]
-        if dir == 'R':
-            h[0] = h[0] + 1
-        elif dir == 'L':
-            h[0] = h[0] - 1
-        elif dir == 'U':
-            h[1] = h[1] + 1
-        elif dir == 'D':
-            h[1] = h[1] - 1
-        for i in range(1,10):
-            rope[i] = follow(rope[i-1], rope[i])
-        res.add(str(list(rope[9])))
-    return rope
-
 with open('./Kapy/day09/input.txt', 'r') as f:
     for line in f.readlines():
         dir, nb = line.strip().split(' ')
-        rope = move(rope, dir, int(nb))
+        for _ in range(0, nb):
+            h = rope[0]
+            if dir == 'R':
+                h[0] = h[0] + 1
+            elif dir == 'L':
+                h[0] = h[0] - 1
+            elif dir == 'U':
+                h[1] = h[1] + 1
+            elif dir == 'D':
+                h[1] = h[1] - 1
+            for i in range(0,9):
+                rope[i] = follow(rope[i], rope[i+1])
+            res.add(str(list(rope[9])))
 
 print(len(res))
