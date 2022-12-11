@@ -19,22 +19,13 @@ with open('./Kapy/day11/input.txt', 'r') as f:
         if (i-3) % 7 == 0: # Divisibility
             div = int(line[3])
             bigDiv *= div
-            monkeyThrows.append([div])
+            monkeyThrows.append([div]) # if divisible by n then monkey 1 else monkey 2 will look like : [n, 1, 2]
         if (i-4) % 7 == 0 or (i-5) % 7 == 0: # if True or if False
             monkeyThrows[monkeyID].append(int(line[5]))
 
 def operation(worryLevel, op, nb):
-    if op == '*':
-        if nb == 'old':
-            worryLevel *= worryLevel
-        else:
-            worryLevel *= int(nb)
-    else:
-        if nb == 'old':
-            worryLevel += worryLevel
-        else:
-            worryLevel += int(nb)
-    return worryLevel
+    nb = worryLevel if nb == 'old' else int(nb)
+    return worryLevel * nb if op == '*' else worryLevel + nb
 
 for _ in range(0, 10000):
     for monkeyID in range(0, len(monkeyItems)):
@@ -44,10 +35,7 @@ for _ in range(0, 10000):
             worryLevel = operation(worryLevel, ops[0], ops[1])
             worryLevel = worryLevel % bigDiv # to keep numbers small enough, without impacting the division test
             throws = monkeyThrows[monkeyID]
-            if worryLevel % throws[0] == 0:
-                newID = throws[1]
-            else:
-                newID = throws[2]
+            newID = throws[1] if worryLevel % throws[0] == 0 else throws[2]
             monkeyItems[newID].append(worryLevel)
             monkeyItems[monkeyID].pop()
 
