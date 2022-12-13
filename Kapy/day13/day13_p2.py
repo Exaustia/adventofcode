@@ -18,7 +18,6 @@ def compare(x, y): # return 1 if x>y, 0 if x=y, and -1 if x<y
             return compare(x, [y])
 
 packets = [[[2]], [[6]]]
-result = 0
 with open('./Kapy/day13/input.txt', 'r') as f:
     for idx, line in enumerate(f.readlines()): # sort all packets
         if (idx - 2) % 3 != 0:
