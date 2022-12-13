@@ -17,14 +17,19 @@ def compare(x, y): # return 1 if x>y, 0 if x=y, and -1 if x<y
         else:
             return compare(x, [y])
 
+packets = [[[2]], [[6]]]
 result = 0
 with open('./Kapy/day13/input.txt', 'r') as f:
-    for idx, line in enumerate(f.readlines()):
-        if idx % 3 == 0:
-            p1 = eval(line.strip())
-        if (idx-1) % 3 == 0:
-            p2 = eval(line.strip())
-            if compare(p1, p2) == -1:
-                result += int(idx/3) + 1
-                
-print(result)
+    for idx, line in enumerate(f.readlines()): # sort all packets
+        if (idx - 2) % 3 != 0:
+            comp = 0
+            p = eval(line.strip())
+            for i, p in enumerate(packets):
+                comp = compare(p, p)
+                if comp == 1:
+                    packets.insert(i, p)
+                    break
+            if comp != 1: # higher than every other one
+                packets.append(p)
+
+print((packets.index([[2]])+1) * (packets.index([[6]])+1))
