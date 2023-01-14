@@ -20,4 +20,3 @@ for line in open('./Kapy/day18/input.txt', 'r').read().split('\n'):
     cubes.add(cube)
 
 print(sum)
-        
