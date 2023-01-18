@@ -1,0 +1,20 @@
+
+key = 811589153
+file = [int(line) for line in open('./Kapy/day20/input.txt', 'r').read().split('\n')]
+tt = len(file)
+mod = tt-1 # really ...
+order = [i for i in range(tt)]
+
+for _ in range(10):
+    for i in range(len(file)):
+        pos = order.index(i)
+        elem = file[pos]*key
+        if pos + elem > 0:
+            newIndex = (pos+elem)%mod
+        else:
+            newIndex = (pos+elem)%-mod if (pos+elem)%-mod != 0 else tt
+        file.insert(newIndex, file.pop(pos))
+        order.insert(newIndex, order.pop(pos))
+
+zero = file.index(0)
+print(file[(zero+1000)%tt]*key + file[(zero+2000)%tt]*key + file[(zero+3000)%tt]*key)
