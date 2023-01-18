@@ -1,6 +1,6 @@
 
 monkeys = {}
-for line in open('./Kapy/day21/inputTest.txt', 'r').read().split('\n'):
+for line in open('./Kapy/day21/input.txt', 'r').read().split('\n'):
     monkey = line.split(' ')
     if len(monkey) == 2:
         monkeys[monkey[0][:-1]] = int(monkey[1])
@@ -26,12 +26,32 @@ while(enfant != 'root'):
     for m in monkeys:
         if isinstance(monkeys[m], tuple):
             if monkeys[m][0] == enfant:
-                number = getNumber(monkeys[m][2])
+                operations.insert(0,(monkeys[m][1], getNumber(monkeys[m][2])))
             if monkeys[m][2] == enfant:
-                number = getNumber(monkeys[m][0])
+                operations.insert(0,(getNumber(monkeys[m][0]), monkeys[m][1]))
             if monkeys[m][0] == enfant or monkeys[m][2] == enfant:
                 enfant = m
-                operations.insert(0,(number, monkeys[m][1]))
                 break
 
-print(operations)
+goal = operations[0][0] if isinstance(operations[0][0], int) else operations[0][1]
+for sign, nb in operations[1:]:
+    inverse = False
+    if isinstance(sign, int):
+        sign, nb = nb, sign
+        inverse = True
+    if sign == '+':
+        goal = goal - nb
+    if sign == '-':
+        if inverse:
+            goal = nb - goal
+        else:
+            goal = goal + nb
+    if sign == '*':
+        goal = int(goal / nb)
+    if sign == '/':
+        if inverse:
+            goal = int(nb / goal)
+        else:
+            goal = goal * nb
+
+print(goal)
