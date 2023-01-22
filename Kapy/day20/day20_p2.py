@@ -12,7 +12,7 @@ for _ in range(10):
         if pos + elem > 0:
             newIndex = (pos+elem)%mod
         else:
-            newIndex = (pos+elem)%-mod if (pos+elem)%-mod != 0 else tt
+            newIndex = (pos+elem)%-mod if (pos+elem)%-mod != 0 else mod
         file.insert(newIndex, file.pop(pos))
         order.insert(newIndex, order.pop(pos))
 
