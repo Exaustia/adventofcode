@@ -46,6 +46,7 @@ class factory():
 total = 0
 for line in lines:
     s = line
+    print(line)
     test = re.findall('Blueprint (.*): Each ore robot costs (.*) ore. Each clay robot costs (.*) ore. Each obsidian robot costs (.*) ore and (.*) clay. Each geode robot costs (.*) ore and (.*) obsidian.', line)
     numBlueprint = int(test[0][0])
     oreRobotcost = int(test[0][1])
@@ -110,19 +111,19 @@ for line in lines:
                     
                     # print(f"{i} - {newFact}")
                     add = True
-                    for possib in possibilities:
-                        if newFact == possib:
-                            # print('test')
-                            add = False
-                            break
-                    if robotObsiConstructed and newFact.nbObsiRobot == 0:
-                        add = False
+                    # for possib in possibilities:
+                    #     if newFact == possib:
+                    #         # print('test')
+                    #         add = False
+                    #         break
+                    # if robotObsiConstructed and newFact.nbObsiRobot == 0:
+                    #     add = False
                     if robotGeodeConstructed > newFact.nbGeodeRobot:
                         add = False
                     
-                    if firstTimeObsi == 1:
-                        firstTimeObsi += 1
-                        possibilities = []
+                    # if firstTimeObsi == 1:
+                    #     firstTimeObsi += 1
+                    #     possibilities = []
                     if newMaxGeode:
                         possibilities = []
                         print("Max Geode")
