@@ -21,54 +21,49 @@ def getLeftBorder(line):
 def moveBy(nb):
     x, y = pos
     for _ in range(nb):
+        b = True
         if facing == 0: # LEFT
             if x < getRightBorder(maze[y]):
                 if maze[y][x+1] != "#":
                     x += 1
-                else:
-                    break
+                    b = False
             else:
                 idx = getLeftBorder(maze[y])
                 if maze[y][idx] != '#':
                     x = idx
-                else:
-                    break
+                    b = False
         elif facing == 1: # DOWN
             if y < getRightBorder(mazeRotated[x]):
                 if mazeRotated[x][y+1] != "#":
                     y += 1
-                else:
-                    break
+                    b = False
             else:
                 idx = getLeftBorder(mazeRotated[x])
                 if mazeRotated[x][idx] != '#':
                     y = idx
-                else:
-                    break
+                    b = False
         elif facing == 2: # RIGHT
             if x > getLeftBorder(maze[y]):
                 if maze[y][x-1] != "#":
                     x -= 1
-                else:
-                    break
+                    b = False
             else:
                 idx = getRightBorder(maze[y])
                 if maze[y][idx] != '#':
                     x = idx
-                else:
-                    break
+                    b = False
         else: # facing == 3 # UP
             if y > getLeftBorder(mazeRotated[x]):
                 if mazeRotated[x][y-1] != "#":
                     y -= 1
-                else:
-                    break
+                    b = False
             else:
                 idx = getRightBorder(mazeRotated[x])
                 if mazeRotated[x][idx] != '#':
                     y = idx
-                else:
-                    break
+                    b = False
+        if b:
+            break
     return x, y
 
 lenMax = 0
