@@ -2,7 +2,7 @@
 file = [int(line) for line in open('./Kapy/day20/input.txt', 'r').read().split('\n')]
 tt = len(file)
 mod = tt-1 # really ...
-order = [i for i in range(tt)]
+order = list(range(tt))
 
 for i in range(tt):
     pos = order.index(i)
