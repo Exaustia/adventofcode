@@ -39,6 +39,3 @@ for blueprintID, line in enumerate(open('./Kapy/day19/inputTest.txt', 'r').read(
         print(ressources)
         print(robots)
         print('\r\n')
-
-
-
