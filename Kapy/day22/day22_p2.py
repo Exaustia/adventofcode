@@ -9,23 +9,41 @@ def parsePath(path):
             nb = ''
         else:
             nb += x
+    parsedPath.append(int(nb))
     return parsedPath
 
+dicoSides = { # dico test
+    'A1': {'taq':True, 'link':'A2', 'rota':'D', 'start':(8,0)},
+    'A2': {'taq':True, 'link':'A1', 'rota':'D', 'start':(0,4)},
+    'B1': {'taq':False, 'link':'B2', 'rota':'L', 'start':(8,0)},
+    'B2': {'taq':False, 'link':'B1', 'rota':'R', 'start':(4,4)},
+    'C1': {'taq':True, 'link':'C2', 'rota':'D', 'start':(11,0)},
+    'C2': {'taq':True, 'link':'C1', 'rota':'D', 'start':(15,8)},
+    'D1': {'taq':True, 'link':'D2', 'rota':'R', 'start':(11,4)},
+    'D2': {'taq':True, 'link':'D1', 'rota':'L', 'start':(12,8)},
+    'E1': {'taq':True, 'link':'E2', 'rota':'R', 'start':(8,8)},
+    'E2': {'taq':True, 'link':'E1', 'rota':'L', 'start':(8,7)},
+    'F1': {'taq':True, 'link':'F2', 'rota':'D', 'start':(0,7)},
+    'F2': {'taq':True, 'link':'F1', 'rota':'D', 'start':(8,11)},
+    'G1': {'taq':True, 'link':'G2', 'rota':'L', 'start':(12,11)},
+    'G2': {'taq':True, 'link':'G1', 'rota':'R', 'start':(0,4)}
+}
+
 dicoSides = {
-    'B2': {'sens':'v', 'link':'B1', 'rota':'R', 'start':(0,100)},
-    'E2': {'sens':'v', 'link':'E1', 'rota':'O', 'start':(0,199)}, # O = pas de rota
-    'A1': {'sens':'v', 'link':'A2', 'rota':'R', 'start':(50,149)},
-    'D1': {'sens':'v', 'link':'D2', 'rota':'R', 'start':(50,0)},
-    'E1': {'sens':'v', 'link':'E2', 'rota':'O', 'start':(100,0)},
-    'G1': {'sens':'v', 'link':'G2', 'rota':'R', 'start':(100,49)},
-    'B1': {'sens':'h', 'link':'B2', 'rota':'L', 'start':(50,50)},
-    'G2': {'sens':'h', 'link':'G1', 'rota':'L', 'start':(99,50)},
-    'C2': {'sens':'h', 'link':'C1', 'rota':'D', 'start':(0,100)}, # D = demi tour
-    'F2': {'sens':'h', 'link':'F1', 'rota':'D', 'start':(99,100)},
-    'D2': {'sens':'h', 'link':'D1', 'rota':'L', 'start':(0,150)},
-    'A2': {'sens':'h', 'link':'A1', 'rota':'L', 'start':(49,150)},
-    'C1': {'sens':'h', 'link':'C2', 'rota':'D', 'start':(50,0)},
-    'F1': {'sens':'h', 'link':'F2', 'rota':'D', 'start':(149,0)}
+    'B2': {'taq':False, 'link':'B1', 'rota':'R', 'start':(0,100)},
+    'E2': {'taq':False, 'link':'E1', 'rota':'O', 'start':(0,199)}, # O = pas de rota
+    'A1': {'taq':False, 'link':'A2', 'rota':'R', 'start':(50,149)},
+    'D1': {'taq':False, 'link':'D2', 'rota':'R', 'start':(50,0)},
+    'E1': {'taq':False, 'link':'E2', 'rota':'O', 'start':(100,0)},
+    'G1': {'taq':False, 'link':'G2', 'rota':'R', 'start':(100,49)},
+    'B1': {'taq':False, 'link':'B2', 'rota':'L', 'start':(50,50)},
+    'G2': {'taq':False, 'link':'G1', 'rota':'L', 'start':(99,50)},
+    'C2': {'taq':False, 'link':'C1', 'rota':'D', 'start':(0,100)}, # D = demi tour
+    'F2': {'taq':False, 'link':'F1', 'rota':'D', 'start':(99,100)},
+    'D2': {'taq':False, 'link':'D1', 'rota':'L', 'start':(0,150)},
+    'A2': {'taq':False, 'link':'A1', 'rota':'L', 'start':(49,150)},
+    'C1': {'taq':False, 'link':'C2', 'rota':'D', 'start':(50,0)},
+    'F1': {'taq':False, 'link':'F2', 'rota':'D', 'start':(149,0)}
 }
 
 def getRightBorder(line):
@@ -52,10 +70,14 @@ def moveBy(nb):
                     cellID = cellID.split(',')[0]
                 nextID = dicoSides[cellID]['link']
                 nextPos = dicoSides[nextID]['start']
+                TaQ = dicoSides[nextID]['taq']
                 if dicoSides[cellID]['rota'] == 'D':
                     nextPos = (nextPos[0], nextPos[1] + 49 - (y%50))
                 else:
-                    nextPos = (nextPos[0] + (y%50), nextPos[1])
+                    if TaQ:
+                        nextPos = (nextPos[0] + 49 - (y%50), nextPos[1])
+                    else:    
+                        nextPos = (nextPos[0] + (y%50), nextPos[1])
                 if maze[nextPos[1]][nextPos[0]] != '#':
                     x, y = nextPos
                     b = False
@@ -71,10 +93,17 @@ def moveBy(nb):
                     cellID = cellID.split(',')[1]
                 nextID = dicoSides[cellID]['link']
                 nextPos = dicoSides[nextID]['start']
-                if dicoSides[cellID]['rota'] == 'O':
+                TaQ = dicoSides[nextID]['taq']
+                rota = dicoSides[cellID]['rota']
+                if rota == 'O':
                     nextPos = (nextPos[0] + (x%50), nextPos[1])
+                elif rota == 'D':
+                    nextPos = (nextPos[0] + 49 - (x%50), nextPos[1])
                 else:
-                    nextPos = (nextPos[0], nextPos[1] + (x%50))
+                    if TaQ:
+                        nextPos = (nextPos[0], nextPos[1] + 49 - (x%50))    
+                    else:
+                        nextPos = (nextPos[0], nextPos[1] + (x%50))
                 if maze[nextPos[1]][nextPos[0]] != '#':
                     x, y = nextPos
                     b = False
@@ -90,10 +119,14 @@ def moveBy(nb):
                     cellID = cellID.split(',')[0]
                 nextID = dicoSides[cellID]['link']
                 nextPos = dicoSides[nextID]['start']
+                TaQ = dicoSides[nextID]['taq']
                 if dicoSides[cellID]['rota'] == 'D':
                     nextPos = (nextPos[0], nextPos[1] + 49 - (y%50))
                 else:
-                    nextPos = (nextPos[0] + (y%50), nextPos[1])
+                    if TaQ:
+                        nextPos = (nextPos[0] + 49 - (y%50), nextPos[1])
+                    else:
+                        nextPos = (nextPos[0] + (y%50), nextPos[1])
                 if maze[nextPos[1]][nextPos[0]] != '#':
                     x, y = nextPos
                     b = False
@@ -109,10 +142,17 @@ def moveBy(nb):
                     cellID = cellID.split(',')[1]
                 nextID = dicoSides[cellID]['link']
                 nextPos = dicoSides[nextID]['start']
-                if dicoSides[cellID]['rota'] == 'O':
+                TaQ = dicoSides[nextID]['taq']
+                rota = dicoSides[cellID]['rota']
+                if rota == 'O':
                     nextPos = (nextPos[0] + (x%50), nextPos[1])
+                elif rota == 'D':
+                    nextPos = (nextPos[0] + 49 - (x%50), nextPos[1])
                 else:
-                    nextPos = (nextPos[0], nextPos[1] + (x%50))
+                    if TaQ:
+                        nextPos = (nextPos[0], nextPos[1] + 49 - (x%50))
+                    else:
+                        nextPos = (nextPos[0], nextPos[1] + (x%50))
                 if maze[nextPos[1]][nextPos[0]] != '#':
                     x, y = nextPos
                     b = False
@@ -150,9 +190,6 @@ for y, line in enumerate(maze):
         if len(mazeRotated) == x:
             mazeRotated.append('')
         mazeRotated[x] += pixel
-
-#for line in mazeRotated:
-#    print(line)
 
 pos = (maze[0].index('.'), 0)
 for move in path:
