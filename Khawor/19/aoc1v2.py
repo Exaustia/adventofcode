@@ -1,6 +1,6 @@
 import re
 import copy
-f = open("inputtest.txt","r")
+f = open("input.txt","r")
 lines = f.readlines()
 
 
@@ -66,11 +66,20 @@ for line in lines:
     maxFact = None
     explored = False
     i = 1
+    cptBoucle = 0
+    bestLvlGeode = 30
     while explored == False:
         goingUp = False
-        print(i)
+        cptBoucle += 1
+        if cptBoucle%100000 == 0:
+            chaineFact = f"{cptBoucle}"
+            
+            for facto in factories:
+                chaineFact += f"- {len(facto)}"
+            print(chaineFact)
+        # print(i)
         if len(factories[len(factories)-1])>0:
-            currentFact = factories[len(factories)-1].pop(0)
+            currentFact = factories[len(factories)-1].pop()
         else:
             goingUp = True
             if len(factories) == 1 and len(factories[len(factories)-1]) == 0:
@@ -83,57 +92,69 @@ for line in lines:
 
         if not(goingUp):
             possibilities = []
-            if i == 24:
+            if i == 25:
                 newFact = copy.copy(currentFact)
                 newFact.parentFact=currentFact
                 newFact.currentMinute = i
                 if ( newFact.nbGeode > max):
-                    max = newFact.ngGeode
+                    max = newFact.nbGeode
                     maxFact = newFact
                     print(max)
-            for k in range(0,5):
+            elif bestLvlGeode < i and currentFact.nbGeodeRobot == 0:
+                possibilities = []
+            elif i == 24: #dernière minute, on fait juste rien
                 newFact = copy.copy(currentFact)
-                modif = False
-                oreplus = 0
-                clayplus = 0
-                obsiplus = 0
-                geodeplus = 0
-                newMaxGeode = False
-                match k:
-                    case 0: #do nothing
-                        modif = True  
-                    case 1: #ore robot
-                        if newFact.nbOre >= oreRobotcost:
-                            oreplus += 1
-                            newFact.nbOre -= oreRobotcost
-                            modif = True
-                    case 2: #clay robot
-                        if newFact.nbOre >= clayRobotCost:
-                            clayplus += 1
-                            newFact.nbOre -= clayRobotCost
-                            modif = True
-                    case 3: #obsi robot
-                        if newFact.nbOre >= obsidianRobotCostore and newFact.nbClay >= obsidianRobotCostClay:
-                            obsiplus += 1
-                            newFact.nbOre -= obsidianRobotCostore
-                            newFact.nbClay -= obsidianRobotCostClay
-                            robotObsiConstructed = True
-                            firstTimeObsi += 1
-                            modif = True
-                    case 4: #geode robot
-                        if newFact.nbOre >= geodeRobotCostOre and newFact.nbObsi >= geodeRobotCostObsi:
-                            geodeplus += 1
-                            newFact.nbOre -= geodeRobotCostOre
-                            newFact.nbObsi -= geodeRobotCostObsi
-                            firstTimeGeode += 1
-                            # robotGeodeConstructed = True
-                            modif = True
-                if modif and i < 25:
-                    newFact.farm()
-                    newFact.addRobot(oreplus,clayplus,obsiplus,geodeplus)
-                    newFact.parentFact=currentFact
-                    newFact.currentMinute = i
-                    possibilities.append(newFact)
+                newFact.farm()
+                newFact.parentFact=currentFact
+                newFact.currentMinute = i
+                possibilities.append(newFact)
+                modif=True
+            else:
+                for k in range(0,5):
+                    newFact = copy.copy(currentFact)
+                    modif = False
+                    oreplus = 0
+                    clayplus = 0
+                    obsiplus = 0
+                    geodeplus = 0
+                    newMaxGeode = False
+                    match k:
+                        case 0: #do nothing
+                            modif = True  
+                        case 1: #ore robot
+                            if newFact.nbOre >= oreRobotcost:
+                                oreplus += 1
+                                newFact.nbOre -= oreRobotcost
+                                modif = True
+                        case 2: #clay robot
+                            if newFact.nbOre >= clayRobotCost:
+                                clayplus += 1
+                                newFact.nbOre -= clayRobotCost
+                                modif = True
+                        case 3: #obsi robot
+                            if newFact.nbOre >= obsidianRobotCostore and newFact.nbClay >= obsidianRobotCostClay:
+                                obsiplus += 1
+                                newFact.nbOre -= obsidianRobotCostore
+                                newFact.nbClay -= obsidianRobotCostClay
+                                robotObsiConstructed = True
+                                firstTimeObsi += 1
+                                modif = True
+                        case 4: #geode robot
+                            if newFact.nbOre >= geodeRobotCostOre and newFact.nbObsi >= geodeRobotCostObsi:
+                                geodeplus += 1
+                                newFact.nbOre -= geodeRobotCostOre
+                                newFact.nbObsi -= geodeRobotCostObsi
+                                firstTimeGeode += 1
+                                if bestLvlGeode > i: 
+                                    bestLvlGeode = i
+                                # robotGeodeConstructed = True
+                                modif = True
+                    if modif and i < 25:
+                        newFact.farm()
+                        newFact.addRobot(oreplus,clayplus,obsiplus,geodeplus)
+                        newFact.parentFact=currentFact
+                        newFact.currentMinute = i
+                        possibilities.append(newFact)
 
             if len(possibilities)>0:
                 factories.append(possibilities)
