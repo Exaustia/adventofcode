@@ -26,8 +26,8 @@ prios = [((0, -1), (1, -1), (-1, -1)), # N NE NW
 
 around = [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
 
-n = 0
-while n < 10:
+n = 1
+while True:
     propos = []
     elvesSet = set([tuple(x) for x in elves])
     for elf in elves:
@@ -52,13 +52,4 @@ while n < 10:
         prios.append(prios.pop(0))
     n += 1
 
-elvesList = [tuple(x) for x in elves]
-minX, maxX = min(pos[0] for pos in elvesList), max(pos[0] for pos in elvesList)
-minY, maxY = min(pos[1] for pos in elvesList), max(pos[1] for pos in elvesList)
-nb = 0
-for y in range(minY, maxY+1):
-    line = ''
-    for x in range(minX, maxX+1):
-        if (x, y) not in elvesList:
-            nb += 1
-print(nb)
+print(n)
