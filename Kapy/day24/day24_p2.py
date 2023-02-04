@@ -29,14 +29,13 @@ def moveBliz(b, d):
     return nextPos
 
 def validMoves(pos):
-    valid = {addT(pos, (0,1)), addT(pos, (1, 0)), addT(pos, (0,-1)), addT(pos, (-1, 0))}
+    valid = {addT(pos, (0,1)), addT(pos, (1, 0)), addT(pos, (0,-1)), addT(pos, (-1, 0)), pos}
     valid = valid.difference(set(walls))
-    valid = valid.difference(set(bliz['pos']))
-    return valid if valid != set() else {pos}
+    return valid.difference(set(bliz['pos']))
 
 walls = [(1, -1)]
 bliz = {'pos':[], 'dir':[]}
-file = open('./Kapy/day24/inputTest.txt', 'r').read().split('\n')
+file = open('./Kapy/day24/input.txt', 'r').read().split('\n')
 for y, line in enumerate(file):
     for x, pixel in enumerate(line):
         if pixel == '#':
@@ -45,7 +44,7 @@ for y, line in enumerate(file):
             bliz['pos'].append((x,y))
             bliz['dir'].append(getDir(pixel))
 goal = line.index('.'), len(file)-1
-walls.append(addT(goal, (0,1))) # adding a wall on and above the start
+walls.append(addT(goal, (0,1))) # adding a wall under the bottom goal
 
 nbBliz = len(bliz['pos'])
 meList = [(1,0)]
@@ -59,7 +58,7 @@ while True:
         if goal == (1,0):
             goal = line.index('.'), len(file)-1
         else:
-            if min > 18:
+            if min > 230:
                 break
             else:
                 goal = (1,0)

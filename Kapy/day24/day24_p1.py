@@ -29,10 +29,9 @@ def moveBliz(b, d):
     return nextPos
 
 def validMoves(pos):
-    valid = {addT(pos, (0,1)), addT(pos, (1, 0)), addT(pos, (0,-1)), addT(pos, (-1, 0))}
+    valid = {addT(pos, (0,1)), addT(pos, (1, 0)), addT(pos, (0,-1)), addT(pos, (-1, 0)), pos}
     valid = valid.difference(set(walls))
-    valid = valid.difference(set(bliz['pos']))
-    return valid if valid != set() else {pos}
+    return valid.difference(set(bliz['pos']))
 
 walls = [(1, 0), (1, -1)] # adding a wall on and above the start
 bliz = {'pos':[], 'dir':[]}
@@ -55,5 +54,4 @@ while True:
     min += 1
     if goal in meList:
         break
-
 print(min)
